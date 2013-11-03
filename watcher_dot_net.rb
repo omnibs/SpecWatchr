@@ -553,7 +553,7 @@ class MSTestRunner < TestRunner
     @sh = CommandShell.new
     @failed_tests = Array.new
     @status_by_dll = Hash.new
-    @@ms_test_path = "C:\\program files (x86)\\microsoft visual studio 10.0\\common7\\ide\\mstest.exe"
+    @@ms_test_path = "C:\\program files (x86)\\microsoft visual studio 12.0\\common7\\ide\\mstest.exe"
   end
 
   def self.ms_test_path
@@ -565,7 +565,7 @@ class MSTestRunner < TestRunner
   end
   
   def usage
-    <<-OUTPUT
+=begin <<-OUTPUT
 MSTestRunner will use the following exe to run your tests: 
 #{MSTestRunner.ms_test_path}
 
@@ -604,6 +604,7 @@ namespace YourUnitTests.describe_Person
 
 Whenever you save Person.cs, all tests under the namespace describe_Person will get executed.
 OUTPUT
+=end
   end
 
   def failed_tests
@@ -737,12 +738,14 @@ OUTPUT
   
   def test_cmd test_dll, test_name
     if test_name
-      return "\"#{MSTestRunner.ms_test_path}\" /testcontainer:#{test_dll} /runconfig:#{test_config} /nologo /test:#{test_name} /detail:errormessage"
+      return "\"#{MSTestRunner.ms_test_path}\" /testcontainer:#{test_dll} /nologo /test:#{test_name} /detail:errormessage"
     else
-      return "\"#{MSTestRunner.ms_test_path}\" /testcontainer:#{test_dll} /runconfig:#{test_config} /nologo /detail:errormessage"
+      return "\"#{MSTestRunner.ms_test_path}\" /testcontainer:#{test_dll} /nologo /detail:errormessage"
     end
   end 
-  
+  def find file
+	return just_file_name = File.basename(file, ".cs")
+  end
 end
 
 class CommandShell
@@ -848,5 +851,3 @@ class WatcherDotNet
 
   end
 end
-
-
